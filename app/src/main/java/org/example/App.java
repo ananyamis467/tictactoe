@@ -1,11 +1,10 @@
 package org.example;
 
+//driver; starts/runs the game
 public class App {
-  public String getGreeting() {
-    return "Hello World!";
-  }
-
-  public static void main(String[] args) {
-    System.out.println(new App().getGreeting());
-  }
+    public static void main(String[] args){
+        TicTacToe game = new TicTacToe();
+        game.run();
+    }
 }
+
