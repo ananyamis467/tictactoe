@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+//code
 public class TicTacToe {
 
     static final char EMPTY    = ' ';
@@ -102,7 +103,6 @@ public class TicTacToe {
         }
     }
 
-
     // Board helpers
     void initBoard() {
         for (int i = 0; i < 9; i++) {
@@ -185,7 +185,7 @@ public class TicTacToe {
     }
 
 
-    // Win / draw detection
+    // Win/draw detection
     boolean checkWin() {
         int[][] lines = {
             {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // rows
@@ -212,13 +212,10 @@ public class TicTacToe {
 
     // Game log — display and save
     void printGameLog() {
-        System.out.println("┌─────────────────────────┐");
         System.out.println("│       Game Log           │");
-        System.out.println("├─────────────────────────┤");
         System.out.printf( "│  Player X Wins  : %-4d  │%n", winsX);
         System.out.printf( "│  Player O Wins  : %-4d  │%n", winsO);
         System.out.printf( "│  Ties           : %-4d  │%n", ties);
-        System.out.println("└─────────────────────────┘");
         System.out.println();
     }
 
@@ -230,20 +227,15 @@ public class TicTacToe {
             String timestamp = LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            pw.println("╔══════════════════════════════╗");
             pw.println("║     Tic-Tac-Toe  Game Log    ║");
-            pw.println("╚══════════════════════════════╝");
             pw.println();
             pw.println("Session ended : " + timestamp);
             pw.println("Total rounds  : " + (winsX + winsO + ties));
             pw.println();
-            pw.println("┌─────────────────────────┐");
             pw.println("│       Final Results      │");
-            pw.println("├─────────────────────────┤");
             pw.printf( "│  Player X Wins  : %-4d  │%n", winsX);
             pw.printf( "│  Player O Wins  : %-4d  │%n", winsO);
             pw.printf( "│  Ties           : %-4d  │%n", ties);
-            pw.println("└─────────────────────────┘");
         } catch (IOException e) {
             System.out.println("  ⚠ Warning: could not write game log — " + e.getMessage());
         }

@@ -48,14 +48,12 @@ class TicTacToeTest {
     }
 
     @Test
-    @DisplayName("Game starts with Player X by default")
     void testFirstPlayerIsX() {
         assertEquals(TicTacToe.PLAYER_X, game.currentPlayer);
     }
 
 
     // cellDisplay
-
     @Test 
     void testCellDisplayEmpty() { assertEquals(".", game.cellDisplay(0)); }
 
@@ -71,21 +69,22 @@ class TicTacToeTest {
         assertEquals("O", game.cellDisplay(8));
     }
 
-
     // validateMoveInput – valid
+    @Test  
+    void testValidCell1() { assertEquals(0, game.validateMoveInput("1")); }
+    
+    @Test  
+    void testValidCell9() { assertEquals(8, game.validateMoveInput("9")); }
 
-    @Test @DisplayName("Cell 1 → index 0") void testValidCell1() { assertEquals(0, game.validateMoveInput("1")); }
-    @Test @DisplayName("Cell 9 → index 8") void testValidCell9() { assertEquals(8, game.validateMoveInput("9")); }
-    @Test @DisplayName("Cell 5 → index 4") void testValidCell5() { assertEquals(4, game.validateMoveInput("5")); }
+    @Test 
+    void testValidCell5() { assertEquals(4, game.validateMoveInput("5")); }
 
     @Test
-    @DisplayName("Whitespace-padded input is accepted")
     void testValidMoveWithWhitespace() {
         assertEquals(2, game.validateMoveInput("  3  "));
     }
 
     @Test
-    @DisplayName("validateMoveInput does not mutate the board")
     void testValidateDoesNotMutateBoard() {
         game.validateMoveInput("5");
         assertEquals(TicTacToe.EMPTY, game.board[4]);
@@ -93,7 +92,6 @@ class TicTacToeTest {
 
 
     // validateMoveInput – invalid
-
     @Test void testRejectEmpty()     { assertEquals(-1, game.validateMoveInput("")); assertTrue(game.lastMoveError.contains("No input")); }
     @Test void testRejectWhitespace(){ assertEquals(-1, game.validateMoveInput("   ")); assertTrue(game.lastMoveError.contains("No input")); }
     @Test void testRejectNull()      { assertEquals(-1, game.validateMoveInput(null)); assertTrue(game.lastMoveError.contains("No input")); }
@@ -113,7 +111,6 @@ class TicTacToeTest {
 
 
     // checkWin – all 8 lines
-
     private void fill(char p, int... idx) { for (int i : idx) game.board[i] = p; }
 
     @Test void testWinRow0()   { game.currentPlayer = 'X'; fill('X',0,1,2); assertTrue(game.checkWin()); }
@@ -124,14 +121,12 @@ class TicTacToeTest {
     @Test void testWinCol2()   { game.currentPlayer = 'O'; fill('O',2,5,8); assertTrue(game.checkWin()); }
     @Test void testWinDiag0()  { game.currentPlayer = 'X'; fill('X',0,4,8); assertTrue(game.checkWin()); }
     @Test void testWinDiag1()  { game.currentPlayer = 'X'; fill('X',2,4,6); assertTrue(game.checkWin()); }
-
     @Test void testNoWinEmpty()  { assertFalse(game.checkWin()); }
     @Test void testNoWinTwo()    { fill('X',0,1); game.currentPlayer = 'X'; assertFalse(game.checkWin()); }
     @Test void testNoWinMixed()  { game.board[0]='X'; game.board[1]='O'; game.board[2]='X'; game.currentPlayer='X'; assertFalse(game.checkWin()); }
 
 
     // checkDraw
-
     @Test
     void testDrawFull() {
         char[] d = {'X','O','X','X','O','O','O','X','X'};
@@ -139,22 +134,23 @@ class TicTacToeTest {
         assertTrue(game.checkDraw());
     }
 
-    @Test void testNoDrawEmpty() { assertFalse(game.checkDraw()); }
+    @Test 
+    void testNoDrawEmpty() { assertFalse(game.checkDraw()); }
 
     @Test
-    @DisplayName("No draw with one cell remaining")
     void testNoDrawOneLeft() {
         for (int i = 0; i < 8; i++) game.board[i] = 'X';
         assertFalse(game.checkDraw());
     }
 
 
-    @Test void testPlayAgainNull()  { assertEquals(-1, game.validatePlayAgainInput(null)); }
-    @Test void testPlayAgainEmpty() { assertEquals(-1, game.validatePlayAgainInput("")); }
+    @Test 
+    void testPlayAgainNull()  { assertEquals(-1, game.validatePlayAgainInput(null)); }
 
+    @Test 
+    void testPlayAgainEmpty() { assertEquals(-1, game.validatePlayAgainInput("")); }
 
     // Game log counters
-
     @Test
     void testInitialCounters() {
         assertEquals(0, game.winsX);
@@ -187,7 +183,6 @@ class TicTacToeTest {
     }
 
     @Test
-    @DisplayName("ties increments on draw")
     void testTiesIncrement() {
         char[] d = {'X','O','X','X','O','O','O','X','X'};
         System.arraycopy(d, 0, game.board, 0, 9);
@@ -195,12 +190,8 @@ class TicTacToeTest {
         assertEquals(1, game.ties);
     }
 
-    // =========================================================
     // Turn-order logic based on lastRoundResult
-    // =========================================================
-
     @Test
-    @DisplayName("After X wins, lastRoundResult is O (O lost)")
     void testLastRoundResultAfterXWin() {
         // After X wins: loser is O, so lastRoundResult = PLAYER_O
         game.currentPlayer = TicTacToe.PLAYER_X;
@@ -212,7 +203,6 @@ class TicTacToeTest {
     }
 
     @Test
-    @DisplayName("After O wins, lastRoundResult is X (X lost)")
     void testLastRoundResultAfterOWin() {
         game.currentPlayer = TicTacToe.PLAYER_O;
         fill('O', 0, 3, 6);
@@ -222,7 +212,6 @@ class TicTacToeTest {
     }
 
     @Test
-    @DisplayName("After draw, lastRoundResult is EMPTY")
     void testLastRoundResultAfterDraw() {
         game.ties++;
         game.lastRoundResult = TicTacToe.EMPTY;
@@ -230,7 +219,6 @@ class TicTacToeTest {
     }
 
     // saveGameLog
-
     @Test
     void testSaveGameLog() throws IOException {
         game.winsX = 3;
@@ -267,7 +255,6 @@ class TicTacToeTest {
 
 
     // Integration tests
-
     @Test
     void testIntegrationXWins() throws IOException {
         // X: 1,2,3  O: 4,5
